@@ -1,0 +1,48 @@
+package:
+  name: micmac
+
+source:
+  git_url: https://github.com/micmacIGN/micmac.git
+
+build:
+  number: 1
+
+# conda's native compilers have a problem with opengl so the following are used to ensure it is internal
+# DONT USE THESE - IT WILL NOT COMPILE
+#   - {{ compiler('c') }}
+#    - {{ compiler('cxx') }}
+# This compiles fine, but fails when it gets to the linking stage with anacond lots of messages that need investigation undertstanding. 
+# latest build is here /home/ciaran/anaconda3/conda-bld/micmac_1646324289098
+requirements:
+  build:
+    - git
+    - cmake
+    - {{ cdt('libxcb') }}               # [linux]
+    - {{ cdt('libxi-devel') }}          # [linux]
+    - {{ cdt('libx11-devel') }}         # [linux]
+    - {{ cdt('libxau-devel') }}         # [linux]
+    - {{ cdt('libxext-devel') }}        # [linux]
+    - {{ cdt('libxfixes-devel') }}      # [linux]
+    - {{ cdt('mesa-libgl-devel') }}     # [linux]
+    - {{ cdt('xorg-x11-proto-devel') }} # [linux]
+    - perl
+    - qt # seems to be issue around finding qt widgets (hence below) will fail without this in build
+    - qwt # qt widgets ditto above
+
+  run:
+    - openmp 
+    - xorg-libx11
+    - perl
+    - imagemagick
+    - proj4
+    - exiv2
+    - exiftool
+
+test:
+    imports:
+    commands:
+
+about:
+  home: https://github.com/micmacIGN/micmac
+  license: CeCILL-B
+  summary: Free open-source photogrammetry software tool
